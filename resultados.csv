@@ -1,0 +1,59 @@
+arquivo,metodo,kmer,k,rotulo,clusters,rotuladas,classes,ari,nmi,pureza,tempo_s,memoria_mb
+hbv.fasta,kmeans,3,2,genotipo,2,12,7,0.0234,0.2842,0.2500,0.031,0.16
+hbv.fasta,kmeans,3,2,regiao,2,16,4,0.4318,0.5676,0.8125,0.031,0.16
+hbv.fasta,kmeans,3,4,genotipo,4,12,7,0.0658,0.4610,0.3333,0.006,0.16
+hbv.fasta,kmeans,3,4,regiao,4,16,4,0.8012,0.8298,0.9375,0.006,0.16
+hbv.fasta,kmeans,3,7,genotipo,7,12,7,0.1267,0.6923,0.6667,0.008,0.16
+hbv.fasta,kmeans,3,7,regiao,7,16,4,0.4859,0.7529,1.0000,0.008,0.16
+hbv.fasta,kmeans,4,2,genotipo,2,12,7,0.0234,0.2842,0.2500,0.016,0.17
+hbv.fasta,kmeans,4,2,regiao,2,16,4,0.4318,0.5676,0.8125,0.016,0.17
+hbv.fasta,kmeans,4,4,genotipo,4,12,7,0.0658,0.4610,0.3333,0.015,0.17
+hbv.fasta,kmeans,4,4,regiao,4,16,4,0.8012,0.8298,0.9375,0.015,0.17
+hbv.fasta,kmeans,4,7,genotipo,7,12,7,0.3002,0.8034,0.6667,0.015,0.17
+hbv.fasta,kmeans,4,7,regiao,7,16,4,0.3820,0.6447,0.9375,0.015,0.17
+hbv.fasta,kmeans,5,2,genotipo,2,12,7,0.0234,0.2842,0.2500,0.068,0.44
+hbv.fasta,kmeans,5,2,regiao,2,16,4,0.4318,0.5676,0.8125,0.068,0.44
+hbv.fasta,kmeans,5,4,genotipo,4,12,7,0.0658,0.4610,0.3333,0.059,0.52
+hbv.fasta,kmeans,5,4,regiao,4,16,4,0.8012,0.8298,0.9375,0.059,0.52
+hbv.fasta,kmeans,5,7,genotipo,7,12,7,0.1235,0.6870,0.5833,0.061,0.67
+hbv.fasta,kmeans,5,7,regiao,7,16,4,0.6602,0.7920,1.0000,0.061,0.67
+hbv.fasta,kmeans,6,2,genotipo,2,12,7,0.0234,0.2842,0.2500,0.165,1.72
+hbv.fasta,kmeans,6,2,regiao,2,16,4,0.4318,0.5676,0.8125,0.165,1.72
+hbv.fasta,kmeans,6,4,genotipo,4,12,7,0.0658,0.4610,0.3333,0.224,2.07
+hbv.fasta,kmeans,6,4,regiao,4,16,4,0.8012,0.8298,0.9375,0.224,2.07
+hbv.fasta,kmeans,6,7,genotipo,7,12,7,0.1235,0.6870,0.5833,0.242,2.63
+hbv.fasta,kmeans,6,7,regiao,7,16,4,0.6602,0.7920,1.0000,0.242,2.63
+hbv.fasta,original,,2,genotipo,2,12,7,0.0251,0.3188,0.2500,,
+hbv.fasta,original,,2,regiao,2,16,4,0.8672,0.7903,0.8125,,
+sequencias.fasta,kmeans,3,8,especie,8,237,13,0.2061,0.3468,0.5654,0.083,0.38
+sequencias.fasta,kmeans,3,8,genero,8,237,8,0.2046,0.3207,0.5654,0.083,0.38
+sequencias.fasta,kmeans,3,13,especie,13,237,13,0.1872,0.3195,0.5443,0.076,0.39
+sequencias.fasta,kmeans,3,13,genero,13,237,8,0.1866,0.3027,0.5443,0.076,0.39
+sequencias.fasta,kmeans,4,8,especie,8,237,13,0.2228,0.3261,0.5696,0.217,0.77
+sequencias.fasta,kmeans,4,8,genero,8,237,8,0.2246,0.3113,0.5696,0.217,0.77
+sequencias.fasta,kmeans,4,13,especie,13,237,13,0.1466,0.3069,0.4979,0.189,0.85
+sequencias.fasta,kmeans,4,13,genero,13,237,8,0.1489,0.2985,0.4979,0.189,0.85
+sequencias.fasta,kmeans,5,8,especie,8,237,13,0.1331,0.2253,0.4768,0.504,2.71
+sequencias.fasta,kmeans,5,8,genero,8,237,8,0.1311,0.2023,0.4768,0.504,2.71
+sequencias.fasta,kmeans,5,13,especie,13,237,13,0.1489,0.2418,0.4810,0.641,2.97
+sequencias.fasta,kmeans,5,13,genero,13,237,8,0.1568,0.2536,0.4810,0.641,2.97
+sequencias.fasta,kmeans,6,8,especie,8,237,13,0.0000,0.0000,0.3840,1.327,10.50
+sequencias.fasta,kmeans,6,8,genero,8,237,8,0.0000,0.0000,0.3840,1.327,10.50
+sequencias.fasta,kmeans,6,13,especie,13,237,13,0.1258,0.2203,0.4684,1.620,11.45
+sequencias.fasta,kmeans,6,13,genero,13,237,8,0.1351,0.2336,0.4684,1.620,11.45
+sequencias.fasta (só sequências com rótulo),kmeans,3,8,especie,8,237,13,0.2133,0.3629,0.5992,0.048,0.30
+sequencias.fasta (só sequências com rótulo),kmeans,3,8,genero,8,237,8,0.2127,0.3387,0.5992,0.048,0.30
+sequencias.fasta (só sequências com rótulo),kmeans,3,13,especie,13,237,13,0.2410,0.4399,0.6878,0.051,0.30
+sequencias.fasta (só sequências com rótulo),kmeans,3,13,genero,13,237,8,0.2363,0.4130,0.6878,0.051,0.30
+sequencias.fasta (só sequências com rótulo),kmeans,4,8,especie,8,237,13,0.3250,0.4311,0.6624,0.112,0.77
+sequencias.fasta (só sequências com rótulo),kmeans,4,8,genero,8,237,8,0.3217,0.4228,0.6624,0.112,0.77
+sequencias.fasta (só sequências com rótulo),kmeans,4,13,especie,13,237,13,0.1463,0.4177,0.6540,0.111,0.77
+sequencias.fasta (só sequências com rótulo),kmeans,4,13,genero,13,237,8,0.1486,0.3949,0.6540,0.111,0.77
+sequencias.fasta (só sequências com rótulo),kmeans,5,8,especie,8,237,13,0.3205,0.4454,0.6751,0.338,2.93
+sequencias.fasta (só sequências com rótulo),kmeans,5,8,genero,8,237,8,0.3286,0.4442,0.6751,0.338,2.93
+sequencias.fasta (só sequências com rótulo),kmeans,5,13,especie,13,237,13,0.1620,0.4273,0.6624,0.398,2.93
+sequencias.fasta (só sequências com rótulo),kmeans,5,13,genero,13,237,8,0.1714,0.4104,0.6709,0.398,2.93
+sequencias.fasta (só sequências com rótulo),kmeans,6,8,especie,8,237,13,0.2431,0.4101,0.6371,1.381,11.57
+sequencias.fasta (só sequências com rótulo),kmeans,6,8,genero,8,237,8,0.2452,0.3944,0.6371,1.381,11.57
+sequencias.fasta (só sequências com rótulo),kmeans,6,13,especie,13,237,13,0.1780,0.4455,0.6962,1.854,11.57
+sequencias.fasta (só sequências com rótulo),kmeans,6,13,genero,13,237,8,0.1816,0.4314,0.6962,1.854,11.57
