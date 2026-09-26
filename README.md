@@ -103,22 +103,31 @@ Tabelas completas em [RESULTADOS.md](RESULTADOS.md) e [resultados.csv](resultado
 * **k-mer 4 é o melhor compromisso.** Com k-mer 5 e 6 a memória multiplica por 4 a cada passo e a qualidade não melhora.
 * **Os reads curtos atrapalham o k-means.** Com k-mer 6, um read de 100nt tem ~95 k-mers espalhados por 4096 posições; o vetor fica esparso e distante de tudo. Os reads viram outliers e "roubam" centróides. Com k=8, todas as sequências rotuladas caem num único cluster (ARI 0). Sem os reads, o ARI volta a 0.245.
 
-### Comparação PyKmClust × PyMeShClust × versão original
+### Comparação PyKmClust × PyMeShClust
 Melhor configuração de cada método (entre parênteses: k-mer e parâmetro).
 
-| Tarefa | PyKmClust (k-means) | PyMeShClust | Original 2020 |
-|---|---|---|---|
-| HBV região | 0.801 (3, k=4) | **0.966** (3, s=0.95, 6 clusters) | 0.867 (k-means k=2) |
-| HBV genótipo | 0.300 (4, k=7) | **0.552** (6, s=0.8, 13 clusters) | 0.025 (k-means k=2) |
-| Bactérias, espécie (todas) | **0.223** (4, k=8) | 0.198 (3, s=0.8, 247 clusters) | 0.033 (MeShClust s=0.95) |
-| Bactérias, gênero (só rotuladas) | **0.329** (5, k=8) | 0.194 (3, s=0.8, 25 clusters) | - |
+| Tarefa | PyKmClust (k-means) | PyMeShClust |
+|---|---|---|
+| HBV região | 0.801 (3, k=4) | **0.966** (3, s=0.95, 6 clusters) |
+| HBV genótipo | 0.300 (4, k=7) | **0.552** (6, s=0.8, 13 clusters) |
+| Bactérias, espécie (todas) | **0.223** (4, k=8) | 0.198 (3, s=0.8, 247 clusters) |
+| Bactérias, gênero (só rotuladas) | **0.329** (5, k=8) | 0.194 (3, s=0.8, 25 clusters) |
 
-### O que os números mostram
-* **A composição de k-mers separa bem a região do genoma, e mal o genótipo.** Genótipos do HBV diferem em ~8% dos nucleotídeos, o que quase não muda a frequência de k-mers curtos. Já um trecho do gene S e um genoma completo têm composições bem diferentes.
-* **O original de 2020 acertava a região com k=2 por acaso.** A região no HBV quase coincide com o comprimento (genoma completo × parcial), e o histograma com bug agrupava justamente por comprimento. No genótipo o original fica em ~0 (0.025).
-* **Nas bactérias, nenhum método passa de ~0.33.** Os contigs têm ~800nt e vêm de regiões diferentes do genoma. A "assinatura genômica" por k-mers costuma precisar de trechos de vários kb para separar espécies.
-* **O k-means vai melhor nas bactérias, o PyMeShClust no HBV.** O k-means força exatamente k grupos; o PyMeShClust fragmenta as bactérias em muitos clusters pequenos (pureza alta, ARI baixo).
-* **Cuidado com o HBV:** são só 16 sequências; uma sequência trocada de cluster muda bastante o ARI.
+## Conclusões
+1. **A representação importa mais que o algoritmo.** A diferença entre k-means e MeShClust é menor do que a diferença causada pelo tamanho do k-mer ou pela presença de reads curtos. Escolher bem como a sequência vira vetor vem antes de escolher o clustering.
+2. **Nenhum dos dois ganha sempre, porque cada um supõe uma forma diferente para os grupos.**
+   * O **k-means** força exatamente k grupos e divide o espaço em regiões. Vai melhor quando a classe é espalhada (contigs de bactérias vindos de regiões diferentes do genoma). Precisa saber o k e é sensível a outliers.
+   * O **MeShClust** usa um limiar igual para todos os clusters. Encontra bem grupos compactos (regiões do HBV), mas quebra classes espalhadas em muitos clusters pequenos. O ruído forma clusters próprios em vez de contaminar os outros.
+   * A escolha depende do formato dos dados e de saber ou não quantos grupos existem.
+3. **A composição de k-mers mede "que tipo de sequência é", não "quão parecida ela é".** Os dois métodos separam bem a região do genoma e mal o genótipo, que difere em ~8% dos nucleotídeos: mutações pontuais quase não mudam a frequência de k-mers curtos. É por isso que o MeShClust do artigo usa um GLM para converter estatísticas de k-mers em identidade de alinhamento.
+4. **Os dados limitam as conclusões.** O HBV tem só 16 sequências. Nas bactérias, contigs de ~800nt de genes diferentes da mesma espécie têm composições diferentes, então o ARI baixo mistura falha do método com uma tarefa que esse sinal não resolve. Mais da metade do `sequencias.fasta` não tem rótulo.
+5. **A avaliação com rótulo é indispensável.** A quantidade de clusters ou a pureza sozinhas enganam: o MeShClust com limiar 0.95 tem pureza 0.99 nas bactérias, mas ARI 0.05, porque os clusters são quase unitários.
+6. **Uso prático.** Clustering por k-mers sem alinhamento é rápido e escala bem (200 mil sequências em segundos, com pouca memória). Serve para agrupamento grosso e pré-filtragem: separar tipos de sequência, reduzir redundância, fazer um primeiro corte antes de alinhar. Não substitui métodos baseados em identidade para separar variantes próximas, como genótipos ou cepas.
+
+### Próximos passos
+* Um dataset rotulado maior: centenas de genomas completos de HBV com genótipo conhecido (por exemplo, do HBVdb).
+* Comparar com o CD-HIT nos mesmos dados, para medir quanto se perde sem alinhamento.
+* Implementar o GLM do MeShClust (alinhando uma amostra de pares para treino) ou usar distâncias MinHash no estilo Mash.
 
 ## Arquivos
 * `main.py`: linha de comando do clustering.
@@ -126,7 +135,7 @@ Melhor configuração de cada método (entre parênteses: k-mer e parâmetro).
 * `kmeans.py`: k-means (k-means++ e iterações de Lloyd).
 * `avaliar.py`: rótulos, ARI, NMI e pureza.
 * `experimentos.py`: gera `RESULTADOS.md` e `resultados.csv`.
-* `original/`: versão original de 2020, mantida como referência.
+* `original/`: primeira versão do código (2020).
 
 ## Memória
 Todas as sequências ficam em uma matriz numpy `(N, 4^k)` float32, pré-alocada. Cada k-mer a mais multiplica a memória por 4:
@@ -137,18 +146,3 @@ Todas as sequências ficam em uma matriz numpy `(N, 4^k)` float32, pré-alocada.
 | 1 milhão | 256 MB | 1 GB | 4 GB | 16 GB |
 
 Com 200 mil sequências de 800nt (arquivo de 167MB), k-mer 3 e k=20: ~265MB de pico de RSS e ~18s.
-
-## Mudanças em relação à versão original (2020)
-O problema de memória descrito na época vinha de:
-* cada sequência guardava uma tabela `(74, 4)` quando só uma coluna era usada;
-* o `khmer` criava tabelas, threads e um arquivo temporário para cada sequência;
-* o centróide era recalculado somando o cluster inteiro a cada inserção (O(n²)).
-
-Além disso:
-* O histograma era a **distribuição de abundância** do khmer (quantos k-mers aparecem 1x, 2x, ...), não a contagem de cada k-mer. As linhas com zero eram puladas, desalinhando as posições entre sequências, e na prática os clusters separavam as sequências pelo comprimento. Agora é o vetor de frequência de k-mers normalizado.
-* A escolha do cluster mais próximo devolvia o índice errado para k ≥ 3. Agora usa `argmin`.
-* O centróide era a própria sequência semente e tinha o histograma sobrescrito. Agora é um vetor separado.
-* Havia uma única passada. Agora repete até convergir.
-* Os centróides iniciais eram escolhidos pelo comprimento (só funcionava para k=2). Agora usa k-means++.
-* O comprimento contava o `\n` (1nt a mais) e o leitor só aceitava FASTA com a sequência em uma linha.
-* A inércia final foi conferida contra o `KMeans` do scikit-learn.

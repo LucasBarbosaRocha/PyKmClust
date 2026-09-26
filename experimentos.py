@@ -7,11 +7,10 @@
 # ###################################################################################
 
 import csv
-import os
 import time
 import tracemalloc
 
-from avaliar import ROTULOS, avaliar, ler_clstr
+from avaliar import ROTULOS, avaliar
 from kmer import carregar
 from kmeans import kmeans
 
@@ -23,7 +22,6 @@ DATASETS = [
     ("sequencias.fasta", ["especie", "genero"], {8: "nº de gêneros", 13: "nº de espécies"}, False),
     ("sequencias.fasta", ["especie", "genero"], {8: "nº de gêneros", 13: "nº de espécies"}, True),
 ]
-ORIGINAL = [("hbv.fasta", "original/outputk2.clstr", "original (2020), k=2")]
 
 
 def rodar(arquivo, kmer, k, filtro=None):
@@ -72,17 +70,6 @@ def main():
                                        m["classes"], f"{m['ari']:.4f}", f"{m['nmi']:.4f}",
                                        f"{m['pureza']:.4f}", f"{tempo:.3f}", f"{pico / 2**20:.2f}"])
                 print(f"{titulo} k-mer={kmer} k={k} ({tempo:.2f}s)")
-
-        for arq, clstr, descricao in ORIGINAL:
-            if arq == arquivo and not so_rotuladas and os.path.exists(clstr):
-                nomes, clusters = ler_clstr(clstr)
-                metricas = {r: avaliar(nomes, clusters, r) for r in rotulos}
-                md.append(f"| {descricao} | 2 | " + " | ".join(formatar(metricas[r]) for r in rotulos) + " | - | - |")
-                for r in rotulos:
-                    m = metricas[r]
-                    linhas_csv.append([arquivo, "original", "", 2, r, m["clusters"], m["rotuladas"],
-                                       m["classes"], f"{m['ari']:.4f}", f"{m['nmi']:.4f}",
-                                       f"{m['pureza']:.4f}", "", ""])
         md.append("")
 
     with open("RESULTADOS.md", "w") as saida:
